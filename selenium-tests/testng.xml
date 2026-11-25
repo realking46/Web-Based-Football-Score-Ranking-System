@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Football Tournament UI" verbose="1">
+    <test name="Smoke">
+        <groups><run><include name="smoke"/></run></groups>
+        <packages><package name="com.football.tests"/></packages>
+    </test>
+    <test name="Regression">
+        <groups><run><exclude name="smoke"/><exclude name="known-bugs"/></run></groups>
+        <packages><package name="com.football.tests"/></packages>
+    </test>
+</suite>

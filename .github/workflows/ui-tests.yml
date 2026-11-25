@@ -1,0 +1,36 @@
+name: UI tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  selenium:
+    name: Selenium (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox]
+    defaults:
+      run:
+        working-directory: selenium-tests
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Run Selenium suite
+        run: mvn -B test -Dbrowser=${{ matrix.browser }} -Dheadless=true
+
+      - name: Upload TestNG reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: testng-report-${{ matrix.browser }}
+          path: selenium-tests/target/surefire-reports/
