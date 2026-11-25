@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!-- Tests that reproduce open bugs. They are expected to FAIL until the bug is fixed.
+     Run with: mvn test -Dsurefire.suiteXmlFiles=testng-known-bugs.xml -->
+<suite name="Known bugs" verbose="1">
+    <test name="Known bugs">
+        <groups><run><include name="known-bugs"/></run></groups>
+        <packages><package name="com.football.tests"/></packages>
+    </test>
+</suite>
