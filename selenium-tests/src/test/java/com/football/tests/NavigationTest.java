@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class NavigationTest extends BaseTest {
 
@@ -24,10 +25,17 @@ public class NavigationTest extends BaseTest {
         };
     }
 
-    @Test(dataProvider = "rounds", description = "Each round's Overview button opens that round's page")
+    @Test(dataProvider = "rounds",
+          description = "Each round's Overview button opens that round's page; "
+                      + "on a fresh tournament the page reports that no match data is saved yet")
     public void overviewButtonsOpenRoundPages(String buttonId, String page) {
-        new HomePage(driver).openOverview(buttonId);
+        HomePage home = new HomePage(driver);
+        home.openOverview(buttonId);
+
+        // Round pages alert on load when localStorage has no data for that round.
+        assertEquals(home.acceptAlert(), "No saved data found.");
         new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.urlContains(page));
+        assertTrue(driver.getCurrentUrl().endsWith(page));
     }
 
     @Test(groups = "smoke", description = "View Current Standings opens the player standings page")
